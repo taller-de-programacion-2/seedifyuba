@@ -59,19 +59,10 @@
     "dependencies": "hardhat-solhint includes an old version of solhint, that's why specific solhint dependency is added"
   },
   "types": "types/index.d.ts",
-  "files": [
-    "/contracts"
-  ],
-  "keywords": [
-    "blockchain",
-    "ethereum",
-    "hardhat",
-    "smart-contracts",
-    "solidity"
-  ],
+  "files": ["/contracts"],
+  "keywords": ["blockchain", "ethereum", "hardhat", "smart-contracts", "solidity"],
   "scripts": {
     "prepare": "husky install",
-    "postinstall": "npm run compile",
     "clean": "hardhat clean",
     "compile": "hardhat compile",
     "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/**/*.ts\"",

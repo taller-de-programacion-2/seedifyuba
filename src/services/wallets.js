@@ -2,12 +2,12 @@ const ethers = require("ethers");
 const accounts = [];
 
 const getDeployerWallet = ({ config }) => () => {
-  const provider = new ethers.providers.InfuraProvider(config.network, config.infuraApiKey);
+  const provider = config.networkdProvider();
   return ethers.Wallet.fromMnemonic(config.deployerMnemonic).connect(provider);
 };
 
-const createWallet = () => async () => {
-  const provider = new ethers.providers.InfuraProvider("kovan", process.env.INFURA_API_KEY);
+const createWallet = ({ config }) => async () => {
+  const provider = config.networkProvider();
   // This may break in some environments, keep an eye on it
   const wallet = ethers.Wallet.createRandom().connect(provider);
   accounts.push({
@@ -30,8 +30,8 @@ const getWalletData = () => index => {
   return accounts[index - 1];
 };
 
-const getWallet = ({}) => index => {
-  const provider = new ethers.providers.InfuraProvider("kovan", process.env.INFURA_API_KEY);
+const getWallet = ({ config }) => index => {
+  const provider = config.networkProvider();
 
   return new ethers.Wallet(accounts[index - 1].privateKey, provider);
 };
