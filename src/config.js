@@ -1,14 +1,24 @@
 require("dotenv").config();
-const network = "kovan";
-const deployArtifact = require(`../deployments/${network}/Seedifyuba`);
-const deployerMnemonic = process.env.MNEMONIC;
-const infuraApiKey = process.env.INFURA_API_KEY;
 
-console.log(deployerMnemonic);
-module.exports = {
-  contractAddress: deployArtifact.address,
-  contractAbi: deployArtifact.abi,
-  deployerMnemonic,
-  infuraApiKey,
-  network,
-};
+const ethers = require("ethers");
+const deployerMnemonic = process.env.MNEMONIC;
+
+if (process.env.NETWORK === "kovan") {
+  console.log("Using kovan network");
+  const deployArtifact = require(`../deployments/kovan/Seedifyuba`);
+  module.exports = {
+    contractAddress: deployArtifact.address,
+    contractAbi: deployArtifact.abi,
+    deployerMnemonic,
+    networkProvider: () => new ethers.providers.InfuraProvider("kovan", process.env.INFURA_API_KEY),
+  };
+} else {
+  console.log("Using localhost network");
+  const deployArtifact = require(`../deployments/localhost/Seedifyuba`);
+  module.exports = {
+    contractAddress: deployArtifact.address,
+    contractAbi: deployArtifact.abi,
+    deployerMnemonic,
+    networkProvider: () => new ethers.providers.JsonRpcProvider(process.env.NETWORK),
+  };
+}
